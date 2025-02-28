@@ -2,6 +2,10 @@ const express = require("express");
 const app = express();
 const port = 3002;
 
+app.use(express.json());
+app.use(middleware);
+app.use(requestIncreaser);
+
 let requestCount = 0;
 function requestIncreaser(req, res, next){
     requestCount = requestCount + 1;
@@ -17,8 +21,7 @@ function middleware(req, res, next){
     next();
 }
 
-app.use(middleware);
-app.use(requestIncreaser);
+
 
 app.get("/sum/:a/:b",  (req, res) => {
     const a = parseFloat(req.params.a);
@@ -42,9 +45,10 @@ app.get("/multiply", (req, res) => {
     )
     
 });
-app.get("/diff/:a/:b", (req, res) => {
-    const a = parseFloat(req.params.a);
-    const b = parseFloat(req.params.b);
+app.get("/diff", (req, res) => {
+    console.log(req.body);
+    const a = parseFloat(req.body.a);
+    const b = parseFloat(req.body.b);
     
     res.json(
         {
